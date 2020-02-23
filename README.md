@@ -1,4 +1,4 @@
-# FTX Sample Code
+# This is a fork of FTX sample code
 
 [FTX](https://ftx.com/) is a cryptocurrency derivatives exchange.
 
