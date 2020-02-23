@@ -139,7 +139,7 @@ class FtxClient:
 
     def get_position(self, name: str, show_avg_price: bool = False) -> dict:
         return next(filter(lambda x: x['future'] == name, self.get_positions(show_avg_price)), None)
-##
+
     def get_subaccounts(self)->dict:
         return self._get(f'subaccounts/')
 
@@ -160,8 +160,6 @@ class FtxClient:
         use None or 'main' for the main account
         """
         self._post(f'subaccounts/transfer', {'coin':coin, 'size':size, 'source':source, 'destination':destination})
-
-
 
     def get_historical_prices(self, market_name: str, resolution:float, limit:float = None, start_time:float=None, end_time:float=None)-> List[dict]:
         return self._get(f'markets/{market_name}/candles?resolution={resolution}&limit={limit}&start_time={start_time}&end_time={end_time}')
@@ -184,7 +182,6 @@ class FtxClient:
     def get_coins(self)-> dict:
         return self._get(f'wallet/coins')
 
-
     def get_balances_all_accounts(self)->dict:
         return self._get(f'wallet/all_balances')
 
@@ -196,8 +193,6 @@ class FtxClient:
 
     def request_withdrawal(self,coin:str, size:float, address:str, tag:str=None, password:str=None, code:str=None)->dict:
         return self._post(f'wallet/withdrawals', {'coin':coin, 'size':size, 'address':address, 'tag':tag, 'password':password, 'code':code})
-
-
 
     def get_trigger_order_triggers(self, order_id:str)->dict:
         return self._get(f'conditional_orders/{order_id}/triggers')
@@ -217,11 +212,8 @@ class FtxClient:
     def cancel_open_trigger_order(self, id:str)->dict:
         return self._delete(f'conditional_orders/{id}')
 
-
     def get_funding_payments(self, future:str=None, start_time:float=None, end_time:float=None)->dict:
         return self._get(f'funding_payments', {'future':future, 'end_time':end_time, 'start_time':start_time})
-
-
 
     def list_leveraged_tokens(self)->List[dict]:
         return self._get(f'lt/tokens')
