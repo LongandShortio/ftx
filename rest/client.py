@@ -235,3 +235,43 @@ class FtxClient:
 
     def request_leveraged_token_redemption(self, token_name:str, size:float)->dict:
         return self._post(f'lt/{token_name}/redeem', {'size':size})
+    
+    def list_quote_requests(self)->List[dict]:
+        return self._get(f'options/requests')
+
+    def get_my_quote_requests(self)->List[dict]:
+        return self._get(f'options/my_requests')
+
+    def create_quote_request(self, type:str, strike:float, expiry:float, side:str, size:float, limitPrice:Optional[float]=None, hideLimitPrice:bool=False, requestExpiry:Optional[float]=None)->dict:
+        return self._post(f'options/requests', {'underlying':'BTC', 'type':type, 'strike':strike, 'expiry':expiry, 'side':side, 'size':size, **({'limitPrice': limitPrice} if limitPrice is not None else {}), 'hideLimitPrice':hideLimitPrice, **({'requestExpiry': requestExpiry} if requestExpiry is not None else {})})
+
+    def cancel_quote_request(self, request_id:str)->dict:
+        return self._delete(f'options/requests/{request_id}')
+
+    def get_quote_for_my_quote_request(self, request_id:str)->dict:
+        return self._get(f'options/requests/{request_id}/quotes')
+
+    def create_quote(self, request_id:str, price:float)-> dict:
+        return self._post(f'options/requests/{request_id}/quotes', {'price':price})
+
+    def get_my_quotes(self):
+        return self._get(f'options/my_quotes')
+
+    def cancel_quote(self, quote_id:str)->dict:
+        return self._delete(f'options/quotes/{quote_id}')
+
+    def accept_quote(self, quote_id:str)->dict:
+        return self._post(f'options/quotes/{quote_id}/accept')
+
+    def get_account_option_info(self)->dict:
+        return self._get(f'options/account_info')
+
+    def get_positions_options(self)->List[dict]:
+        return self._get(f'options/positions')
+
+    def get_public_options_trade(self, limit:float=None, start_time:float=None, end_time:float=None)->List[dict]:
+        return self._get(f'options/trades', {'limit':limit, 'start_time':start_time, 'end_time':end_time})
+
+    def get_options_fills(self, limit:float=None, start_time:float=None, end_time:float=None)->List[dict]:
+        return self._get(f'options/fills', {'limit':limit, 'start_time':start_time, 'end_time':end_time})
+
